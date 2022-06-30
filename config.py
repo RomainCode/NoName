@@ -32,3 +32,13 @@ H5 = pygame.font.SysFont(SYS_FONT, 13)
 H6 = pygame.font.SysFont(SYS_FONT, 10)"""
 
 
+
+
+
+### CONVENTIONS D'ECRITURE ###
+# variables contantes -> MA_VARIABLE
+# variable classique -> ma_variable
+# fonction -> maFonction
+# clase -> MaClasse
+
+# faire mini docu en début de fonctions, spécifier au max les types des params/return

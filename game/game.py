@@ -1,4 +1,6 @@
-from scene import Scene
+#from scene import *
+
+
 
 class Game:
 
@@ -7,5 +9,5 @@ class Game:
         pass
 
 
-        self.game_start_scene = Scene()
-        self.main_game_scene = Scene()
+        #self.game_start_scene = Scene()
+        #self.main_game_scene = Scene()

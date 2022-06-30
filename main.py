@@ -2,7 +2,15 @@ from game.game import Game
 import pygame
 import config
 
+# temp import
+from physics.collisions.Rectangle2D import Rectangle2D
+
 game = Game()
+screen = config.screen
+
+# temp variables test
+rectangle = Rectangle2D(10, 10, 20, 50)
+
 
 while not game.isNeedToClose:
 
@@ -12,10 +20,12 @@ while not game.isNeedToClose:
             game.isNeedToClose = True
 
     # Fill the background with white
-    config.screen.fill((255, 255, 255))
+    screen.fill((50, 50, 50))
+
+    rectangle.debugDraw(screen)
 
 
-    config.clock.tick()
+    config.clock.tick(config.FPS)
     # Flip the display
     pygame.display.flip()
 
