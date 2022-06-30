@@ -2,12 +2,13 @@ import pygame
 from utils.utils import *
 
 class Rectangle2D:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h, gravity=None):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        
+        if gravity is not None:
+            self.gravity = gravity        
 
 
     def colliseWithRect(self, rectB) -> bool:

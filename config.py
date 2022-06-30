@@ -31,9 +31,10 @@ H4 = pygame.font.SysFont(SYS_FONT, 16)
 H5 = pygame.font.SysFont(SYS_FONT, 13)
 H6 = pygame.font.SysFont(SYS_FONT, 10)"""
 
+Keys = {"jump":"space"}
 
 
-
+GROUND_MARGIN = 200
 
 ### CONVENTIONS D'ECRITURE ###
 # variables contantes -> MA_VARIABLE
