@@ -10,7 +10,7 @@ class Rectangle2D:
         
 
 
-    def colliseWithRect(self, rectB : Rectangle2D.Rectangle2D) -> bool:
+    def colliseWithRect(self, rectB) -> bool:
         return isCollisionRect(self.x, self.y, rectB.x, rectB.y, self.w, self.h, rectB.w, rectB.h)
         
     

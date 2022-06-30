@@ -9,7 +9,13 @@ game = Game()
 screen = config.screen
 
 # temp variables test
-rectangle = Rectangle2D(10, 10, 20, 50)
+collider = Rectangle2D(10, 10, 20, 50)
+
+# un joueur
+# -> un collider
+# -> un système d'animation
+# object sith gravity <- collider
+
 
 
 while not game.isNeedToClose:
@@ -22,7 +28,7 @@ while not game.isNeedToClose:
     # Fill the background with white
     screen.fill((50, 50, 50))
 
-    rectangle.debugDraw(screen)
+    collider.debugDraw(screen)
 
 
     config.clock.tick(config.FPS)
