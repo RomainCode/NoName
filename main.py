@@ -7,9 +7,10 @@ from pygame.locals import *
 # our libs
 from game.game import Game
 from physics.simulation.gravityBody import * 
+from entities.coin import Coin
 
 # temp import
-from physics.collisions.Rectangle2D import Rectangle2D
+from physics.collisions.rectangle2D import Rectangle2D
 from entities.character import Character
 
 game = Game()
@@ -20,6 +21,7 @@ collider = GravityBody(10,10,20,50)
 
 
 character = Character((50,10,20,50))
+coin = Coin(28, 220, 25)
 
 # un joueur
 # -> un collider
@@ -49,10 +51,16 @@ while not game.isNeedToClose:
     t1 = t2
 
     # Fill the background with white
-    screen.fill((50, 50, 50))
+    screen.fill((100, 100, 100))
 
     character.collider.debugDraw(screen)
+    coin.update(deltaTime)
+    coin.draw(screen)
     character.update(deltaTime)
+
+    if coin.collider.isCollisionWithRect(character.collider):
+        print("collision")
+
     #character.collider.update(deltaTime)
     #character.collider.y += character.collider.velocityY
     #character.collider.velocityY = 0

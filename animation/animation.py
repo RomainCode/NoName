@@ -20,7 +20,7 @@ class Animation:
         self.images = []
         self.pointer = 0
         self.last_time = 0
-        self.time_btw_frames = 500
+        self.time_btw_frames = 0.3
         self.type = Animation.TIMED
         self.state = Animation.PLAYING
 
@@ -59,7 +59,7 @@ class Animation:
     def update(self, deltaTime):
         if self.state == Animation.PLAYING:
             if self.type == Animation.TIMED:
-                self.updateTimedAnimation()
+                self.updateTimedAnimation(deltaTime)
             else:
                 pass # updat ponctual anim
 
@@ -94,7 +94,9 @@ class Animation:
         return result
     
 
-    def adImageByPath(self, path : str):
+    def adImageByPath(self, path : str, size=None):
         img = pygame.image.load(path)
+        if size != None:
+            img = pygame.transform.scale(img, size)
         self.images.append(img)
         

@@ -1,4 +1,4 @@
-from physics.collisions.Rectangle2D import *
+from physics.collisions.rectangle2D import *
 from config import HEIGHT
 from config import GROUND_MARGIN
 

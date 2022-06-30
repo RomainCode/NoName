@@ -11,7 +11,7 @@ class Rectangle2D:
             self.gravity = gravity        
 
 
-    def colliseWithRect(self, rectB) -> bool:
+    def isCollisionWithRect(self, rectB) -> bool:
         return isCollisionRect(self.x, self.y, rectB.x, rectB.y, self.w, self.h, rectB.w, rectB.h)
         
     
