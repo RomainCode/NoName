@@ -1,5 +1,6 @@
 import random
 import pygame
+import time
 from animation.animation import animation
 class Chunck:
     def __init__(self):
