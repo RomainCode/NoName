@@ -40,9 +40,9 @@ while not game.isNeedToClose:
             game.isNeedToClose = True
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE or pygame.mouse.get_pressed()[0]:
                 character.tryToJump()
-                
+                 
 
     t2 = time.time()
     deltaTime = t2 - t1
