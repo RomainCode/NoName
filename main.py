@@ -8,6 +8,7 @@ from pygame.locals import *
 from game.game import Game
 from physics.simulation.gravityBody import * 
 from entities.coin import Coin
+from world.world import World
 
 # temp import
 from physics.collisions.rectangle2D import Rectangle2D
@@ -21,7 +22,8 @@ collider = GravityBody(10,10,20,50)
 
 
 character = Character((50,10,20,50))
-coin = Coin(28, 220, 25)
+world = World(character)
+
 
 # un joueur
 # -> un collider
@@ -44,7 +46,10 @@ while not game.isNeedToClose:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE or pygame.mouse.get_pressed()[0]:
                 character.tryToJump()
-                 
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_SPACE:
+                character.releaseJump()
 
     t2 = time.time()
     deltaTime = t2 - t1
@@ -54,12 +59,9 @@ while not game.isNeedToClose:
     screen.fill((100, 100, 100))
 
     character.collider.debugDraw(screen)
-    coin.update(deltaTime)
-    coin.draw(screen)
+    world.update(deltaTime)
+    world.draw(screen)
     character.update(deltaTime)
-
-    if coin.collider.isCollisionWithRect(character.collider):
-        print("collision")
 
     #character.collider.update(deltaTime)
     #character.collider.y += character.collider.velocityY
@@ -67,6 +69,7 @@ while not game.isNeedToClose:
 
 
     config.clock.tick(config.FPS)
+    print(config.clock.get_fps())
     # Flip the display
     pygame.display.flip()
 

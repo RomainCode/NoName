@@ -8,6 +8,7 @@ from config import GROUND_MARGIN
 class GravityBody(Rectangle2D):
 
     GRAVITY = 9.8 # (m/s)
+    CORRECTING_FACTOR = 1.4
 
     def __init__(self, x, y, w, h):
         super().__init__(x, y, w, h)
