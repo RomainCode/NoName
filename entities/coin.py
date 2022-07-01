@@ -5,7 +5,7 @@ import pygame
 
 class Coin:
 
-    SPEED = 60
+    SPEED = 120
 
     def __init__(self, x, y, r=20):
         self.animation = Animation()

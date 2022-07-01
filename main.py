@@ -9,7 +9,7 @@ from game.game import Game
 from physics.simulation.gravityBody import * 
 from entities.coin import Coin
 from world.world import World
-
+from world.chunck import Chunck
 # temp import
 from physics.collisions.rectangle2D import Rectangle2D
 from entities.character import Character
@@ -24,12 +24,7 @@ collider = GravityBody(10,10,20,50)
 character = Character((50,10,20,50))
 world = World(character)
 
-
-# un joueur
-# -> un collider
-# -> un système d'animation
-# object sith gravity <- collider
-
+test_chunck = Chunck(64,"./world/map sets/map_test.csv")
 
 t1 = time.time()
 deltaTime = 0
@@ -62,15 +57,10 @@ while not game.isNeedToClose:
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
-
-    #character.collider.update(deltaTime)
-    #character.collider.y += character.collider.velocityY
-    #character.collider.velocityY = 0
-
+    test_chunck.update(deltaTime)
+    test_chunck.draw(screen)
 
     config.clock.tick(config.FPS)
-    print(config.clock.get_fps())
-    # Flip the display
     pygame.display.flip()
 
 

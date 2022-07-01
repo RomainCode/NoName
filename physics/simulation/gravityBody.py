@@ -8,15 +8,15 @@ from config import GROUND_MARGIN
 class GravityBody(Rectangle2D):
 
     GRAVITY = 9.8 # (m/s)
-    CORRECTING_FACTOR = 1.4
+    CORRECTING_FACTOR = 1.3
 
     def __init__(self, x, y, w, h):
         super().__init__(x, y, w, h)
         self.velocityY = 0
-        self.wheight = 80
+        self.wheight = 60
         self.distance_ground = 0
         self.deltaTime =0
-        
+        self.gravity_scale = 1
     
     def update(self, deltaTime):
         #self.velocityY += self.velocityY * deltaTime
@@ -26,11 +26,18 @@ class GravityBody(Rectangle2D):
             
         self.deltaTime = deltaTime
     
+    def addForce(self, f):
+        self.velocityY += f
+
+    def getMotion(self, deltaTime):
+        return self.velocityY * deltaTime   
     
-        
+    def addGravity(self):
+        self.velocityY += GravityBody.GRAVITY*self.gravity_scale
+    
+    def resetVelocity(self):
+        self.velocityY = 0
             
-
-
     def draw(self, surface):
         self.drawDebug(surface)
     

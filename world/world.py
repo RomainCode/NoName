@@ -13,7 +13,7 @@ class World:
         self.character = character
 
         for i in range(10):
-            c = Coin(random.randint(1,5)*80, random.randint(3,5)*80)
+            c = Coin(random.randint(1,5)*80, random.randint(3,5)*60+150)
             self.coins.append(c)
             c.synchronize(self.coins[0].animation.last_time, self.coins[0].animation.pointer)
 
