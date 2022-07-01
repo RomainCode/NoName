@@ -6,5 +6,5 @@ def isCollisionRect(x1, y1, x2, y2, w1, h1, w2, h2) -> bool:
     return False
 
 
-def magnitude(x1, y1, x2, y2):
+def magnitude(x1, y1, x2, y2): # lenght of a vector
     return math.sqrt((x1+x2)**2 + (y1+y2)**2)

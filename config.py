@@ -1,7 +1,8 @@
 import pygame
 
-# color RGB + white,black
+"""Contain all the infos needed by the game, static lib"""
 
+# color RGB + white,black
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)

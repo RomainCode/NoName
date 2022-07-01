@@ -1,6 +1,3 @@
-
-
-from regex import P
 from entities.coin import Coin
 from world.chunckManager import ChunckManager
 from ui.mainScore import MainScore
@@ -12,7 +9,7 @@ import random
 class World:
 
     COIN_BATCH_SIZE = (2, 5) # minium and maximum
-    COIN_SPAWN_PROPORTIONS = [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5]
+    COIN_SPAWN_PROPORTIONS = [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5] # probability repartition of amount of coin in a batch
     COIN_AMOUNT = 3
     COIN_BATCH_SEPARATING_TIME = 6 # min and max
 
@@ -54,13 +51,13 @@ class World:
 
         self.main_score.draw(surface)
 
-    def addCoin(self, x, y):
+    def addCoin(self, x, y): # adds a single coin and synchronizes it
         coin = Coin(x, y)
         self.coins.append(coin)
         coin.synchronize(self.coins[0].animation.last_time, self.coins[0].animation.pointer)
 
 
-    def addCoinBatch(self):
+    def addCoinBatch(self): # adds a structure of coins
         batch_size = random.choice(World.COIN_SPAWN_PROPORTIONS)
         world_x = config.WIDTH
         world_y = random.randint(1, 3)*45 + 200
@@ -69,7 +66,6 @@ class World:
         while len(relat_pos_list) != batch_size:
             position = [random.randint(0, 4), random.randint(0, 4)]
             if not position in relat_pos_list:
-                print(position, relat_pos_list)
                 relat_pos_list.append(position)
         
         for i in range(batch_size):

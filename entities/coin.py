@@ -22,14 +22,13 @@ class Coin:
         self.move(deltaTime)
 
     def draw(self, surface):
-        #self.collider.draw(surface)
         surface.blit(self.animation.getCurrentImage(), (self.collider.x-self.collider.r, self.collider.y-self.collider.r))
     
-    def synchronize(self, last_time, current_pointer):
+    def synchronize(self, last_time, current_pointer): # synchronize the animation's coin to the model's one
         self.animation.last_time = last_time
         self.animation.pointer = current_pointer
     
-    def move(self, deltaTime):
+    def move(self, deltaTime): # move to the left the coin
         self.collider.x -= deltaTime*Coin.SPEED
 
 

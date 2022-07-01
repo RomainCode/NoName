@@ -9,53 +9,41 @@ if TYPE_CHECKING:
     from physics.collisions.circle2D import Circle2D
 
 class Rectangle2D:
-    def __init__(self, x, y, w, h, gravity=None):
+    """Simple rectangle that has the ability to detect collisions"""
+    def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
         self.w = w
-        self.h = h
-        if gravity is not None:
-            self.gravity = gravity        
-
+        self.h = h      
 
     def isCollisionWithRect(self, rectB) -> bool:
         return isCollisionRect(self.x, self.y, rectB.x, rectB.y, self.w, self.h, rectB.w, rectB.h)
         
 
-    def isCollisionWithCircle(self, circle : Circle2D):
-        
-        rleft = self.x
-        rtop = self.y
-        width = self.w
-        height = self.h
-        center_x = circle.x
-        center_y = circle.y
+    def isCollisionWithCircle(self, circle : Circle2D) -> bool:
+        cx = circle.x
+        cy = circle.y
+        rx = self.x
+        ry = self.y
+        rw = self.w
+        rh = self.h
         radius = circle.r
+        
+        testX = cx
+        testY = cy
 
-        # complete boundbox of the rectangle
-        rright, rbottom = rleft + width/2, rtop + height/2
+        if (cx < rx):        testX = rx
+        elif (cx > rx+rw): testX = rx+rw
+        if (cy < ry):        testY = ry
+        elif (cy > ry+rh): testY = ry+rh
 
-        # bounding box of the circle
-        cleft, ctop     = center_x-radius, center_y-radius
-        cright, cbottom = center_x+radius, center_y+radius
+        distX = cx-testX
+        distY = cy-testY
+        distance = math.sqrt( (distX*distX) + (distY*distY) )
 
-        # trivial reject if bounding boxes do not intersect
-        if rright < cleft or rleft > cright or rbottom < ctop or rtop > cbottom:
-            return False  # no collision possible
-
-        # check whether any point of rectangle is inside circle's radius
-        for x in (rleft, rleft+width):
-            for y in (rtop, rtop+height):
-                # compare distance between circle's center point and each point of
-                # the rectangle with the circle's radius
-                if math.hypot(x-center_x, y-center_y) <= radius:
-                    return True  # collision detected
-
-        # check if center of circle is inside rectangle
-        if rleft <= center_x <= rright and rtop <= center_y <= rbottom:
-            return True  # overlaid
-
-        return False  # no collision detected
+        if (distance <= radius):
+            return True
+        return False
     
 
     def debugDraw(self, surface : pygame.Surface):

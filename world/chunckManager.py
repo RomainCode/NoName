@@ -2,6 +2,7 @@ from world.chunck import Chunck
 from config import *
 
 class ChunckManager:
+    """Stores chunks and auto generation/deletion when needed"""
     def __init__(self):
         self.chuncks = []
         self.unload_chuncks = []
@@ -27,7 +28,7 @@ class ChunckManager:
         for chunck in self.chuncks:
             chunck.update(deltaTime) 
 
-    def back(self):
+    def back(self): # handle the suppression of a past chunk and the generation of a new one, preserves continuity in the tiles
         for chunck in self.chuncks:
             if chunck.passed_left:
                 self.chuncks.remove(chunck)

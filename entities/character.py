@@ -21,6 +21,7 @@ class Character:
         self.is_willing_to_stop_jumping = True
     
     def update(self, deltaTime):
+        """Update the character's Y position using the jump and gravity features"""
 
         if self.start_timer:
             self.timer -= deltaTime

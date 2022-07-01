@@ -8,6 +8,7 @@ font1 = pygame.font.Font("./assets/fonts/upheavtt.ttf", 28)
 font2 = pygame.font.Font("./assets/fonts/upheavtt.ttf", 18)
 
 class MainScore():
+    """Stores and display the main scores informations"""
     def __init__(self):
         self.current_gold = 0
         self.current_PPS = 0

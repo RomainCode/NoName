@@ -10,12 +10,13 @@ if TYPE_CHECKING:
     from physics.collisions.rectangle2D import Rectangle2D
 
 class Circle2D:
+    """Simple circle that can handle collision detection"""
     def __init__(self, x, y, r):
         self.x = x
         self.y = y
         self.r = r
 
-    def isCollisionWithRect(self, rect):
+    def isCollisionWithRect(self, rect : Rectangle2D) -> bool:
         cx = self.x
         cy = self.y
         rx = rect.x
@@ -40,7 +41,7 @@ class Circle2D:
             return True
         return False
 
-    def isCollisionWithCircle(self, circle):
+    def isCollisionWithCircle(self, circle : Circle2D) -> bool:
         if utils.magnitude(self.x, self.y, circle.x, circle.y) < self.r+circle.r:
             return True
         return False
