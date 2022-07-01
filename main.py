@@ -21,15 +21,12 @@ from entities.character import Character
 game = Game()
 screen = config.screen
 
-# temp variables test
-collider = Rectangle2D(10,10,50,100)
 
-
-character = Character((50,10,config.PLAYER_WIDTH,config.PLAYER_HEIGHT))
+character = Character((50,400,config.PLAYER_WIDTH,config.PLAYER_HEIGHT))
 world = World(character)
-main_score = MainScore()
 
-chunck_manager = ChunckManager()
+
+#chunck_manager = ChunckManager()
 t1 = time.time()
 deltaTime = 0
 
@@ -61,20 +58,14 @@ while not game.isNeedToClose:
     # Fill the background with white
     screen.fill((100, 100, 100))
 
-    main_score.current_gold *= (1+deltaTime)
-
-    collider.x = mouse_pos[0]
-    collider.y = mouse_pos[1]
-
 
     character.collider.debugDraw(screen)
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
-    chunck_manager.back()
-    chunck_manager.update_chuncks(deltaTime)
-    chunck_manager.draw_chuncks(screen)
-    main_score.draw(screen)
+    #chunck_manager.back()
+    #chunck_manager.update_chuncks(deltaTime)
+    #chunck_manager.draw_chuncks(screen)
     #collider.debugDraw(screen)
 
     config.clock.tick(config.FPS)

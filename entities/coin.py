@@ -22,7 +22,7 @@ class Coin:
         self.move(deltaTime)
 
     def draw(self, surface):
-        self.collider.draw(surface)
+        #self.collider.draw(surface)
         surface.blit(self.animation.getCurrentImage(), (self.collider.x-self.collider.r, self.collider.y-self.collider.r))
     
     def synchronize(self, last_time, current_pointer):

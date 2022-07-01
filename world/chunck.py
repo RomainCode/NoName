@@ -49,16 +49,13 @@ class Chunck:
     def __init__(self, img_size: int, mapset_csv_path: str, offsetX = 0):
         anim = animation()
         self.id = int(time.time() / 500 + random.randint(1, 100))
-        print("chunck id: " + str(self.id))
         self.img_size = img_size
         self.map = list(csv.reader(open(mapset_csv_path)))
         
         self.offsetX = offsetX
         self.passed_right = False
         self.passed_left  = False
-        print(self.map)
         self.generate()
-        print(self.map)
 
 
     def generate(self):

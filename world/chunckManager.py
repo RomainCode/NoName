@@ -7,21 +7,18 @@ class ChunckManager:
         self.unload_chuncks = []
         self.add_chunck()
 
+    
+    def update(self, deltaTime):
+        # handle add/deleting chunks
+        self.back()
+        # update the inner chuncks
+        self.update_chuncks(deltaTime)
 
-    def back(self):
+    def draw(self, screen):
         for chunck in self.chuncks:
-            if chunck.passed_left:
-                self.chuncks.remove(chunck)
-                print(self.chuncks)
-            elif chunck.passed_right:
-                if chunck not in self.unload_chuncks:
-                    self.add_chunck(offsetX=WIDTH)
-                    self.chuncks[-1].offsetX = WIDTH
-                    self.chuncks[-2].offsetX = -len(self.chuncks[-2].map[0])*self.chuncks[-2].img_size + WIDTH
+            chunck.draw(screen)
+    
 
-
-                    self.unload_chuncks.append(chunck)
-              
     def add_chunck(self, offsetX = 0):
         chunck = Chunck(64, "./world/map sets/map_test.csv", offsetX)
         self.chuncks.append(chunck)
@@ -30,8 +27,15 @@ class ChunckManager:
         for chunck in self.chuncks:
             chunck.update(deltaTime) 
 
-    def draw_chuncks(self, screen):
+    def back(self):
         for chunck in self.chuncks:
-            chunck.draw(screen)
+            if chunck.passed_left:
+                self.chuncks.remove(chunck)
+            elif chunck.passed_right:
+                if chunck not in self.unload_chuncks:
+                    self.add_chunck(offsetX=WIDTH)
+                    self.chuncks[-1].offsetX = WIDTH
+                    self.chuncks[-2].offsetX = -len(self.chuncks[-2].map[0])*self.chuncks[-2].img_size + WIDTH
+                    self.unload_chuncks.append(chunck) # pourquoi sotcker les chuncks unloadé ?
 
  
