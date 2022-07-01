@@ -2,6 +2,7 @@
 import pygame
 import time
 import config
+import random
 from pygame.locals import *
 
 # our libs
@@ -21,10 +22,10 @@ game = Game()
 screen = config.screen
 
 # temp variables test
-collider = GravityBody(10,10,20,50)
+collider = Rectangle2D(10,10,50,100)
 
 
-character = Character((50,10,20,50))
+character = Character((50,10,config.PLAYER_WIDTH,config.PLAYER_HEIGHT))
 world = World(character)
 main_score = MainScore()
 
@@ -38,6 +39,9 @@ while not game.isNeedToClose:
 
     # Did the user click the window close button?
     for event in pygame.event.get():
+
+        mouse_pos = pygame.mouse.get_pos()
+
         if event.type == pygame.QUIT:
             game.isNeedToClose = True
         
@@ -48,6 +52,7 @@ while not game.isNeedToClose:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 character.releaseJump()
+        
 
     t2 = time.time()
     deltaTime = t2 - t1
@@ -55,6 +60,12 @@ while not game.isNeedToClose:
 
     # Fill the background with white
     screen.fill((100, 100, 100))
+
+    main_score.current_gold *= (1+deltaTime)
+
+    collider.x = mouse_pos[0]
+    collider.y = mouse_pos[1]
+
 
     character.collider.debugDraw(screen)
     world.update(deltaTime)
@@ -64,6 +75,7 @@ while not game.isNeedToClose:
     chunck_manager.update_chuncks(deltaTime)
     chunck_manager.draw_chuncks(screen)
     main_score.draw(screen)
+    #collider.debugDraw(screen)
 
     config.clock.tick(config.FPS)
     pygame.display.flip()

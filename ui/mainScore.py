@@ -18,7 +18,7 @@ class MainScore():
                 power_of_10 = len(amount_str)
                 power_unit = (power_of_10 - 4) // 3
 
-                if power_unit > len(number_abbreviations):
+                if power_unit+1 > len(number_abbreviations):
                     raise ValueError("Numbr out of range of the abbreviations !")
 
                 return str(round(amount / 10**(power_unit*3+3), 2)) + number_abbreviations[power_unit]

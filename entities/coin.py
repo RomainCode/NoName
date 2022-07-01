@@ -1,11 +1,12 @@
 from animation.animation import Animation
 from physics.collisions.circle2D import Circle2D
+import config
 
 import pygame
 
 class Coin:
 
-    SPEED = 120
+    SPEED = config.BASE_SPEED
 
     def __init__(self, x, y, r=20):
         self.animation = Animation()
@@ -21,7 +22,7 @@ class Coin:
         self.move(deltaTime)
 
     def draw(self, surface):
-        pygame.draw.circle(surface, (255, 0, 0), (self.collider.x, self.collider.y), self.collider.r, width=1)
+        self.collider.draw(surface)
         surface.blit(self.animation.getCurrentImage(), (self.collider.x-self.collider.r, self.collider.y-self.collider.r))
     
     def synchronize(self, last_time, current_pointer):

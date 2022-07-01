@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from utils import utils
 import math
+import pygame
 from typing import TYPE_CHECKING
 
 
@@ -14,40 +15,30 @@ class Circle2D:
         self.y = y
         self.r = r
 
-    def isCollisionWithRect(self, rect : Rectangle2D):
-        
-        rleft = rect.x
-        rtop = rect.y
-        width = rect.w
-        height = rect.h
-        center_x = self.x
-        center_y = self.y
+    def isCollisionWithRect(self, rect):
+        cx = self.x
+        cy = self.y
+        rx = rect.x
+        ry = rect.y
+        rw = rect.w
+        rh = rect.h
         radius = self.r
+        
+        testX = cx
+        testY = cy
 
-        # complete boundbox of the rectangle
-        rright, rbottom = rleft + width/2, rtop + height/2
+        if (cx < rx):        testX = rx
+        elif (cx > rx+rw): testX = rx+rw
+        if (cy < ry):        testY = ry
+        elif (cy > ry+rh): testY = ry+rh
 
-        # bounding box of the circle
-        cleft, ctop     = center_x-radius, center_y-radius
-        cright, cbottom = center_x+radius, center_y+radius
+        distX = cx-testX
+        distY = cy-testY
+        distance = math.sqrt( (distX*distX) + (distY*distY) )
 
-        # trivial reject if bounding boxes do not intersect
-        if rright < cleft or rleft > cright or rbottom < ctop or rtop > cbottom:
-            return False  # no collision possible
-
-        # check whether any point of rectangle is inside circle's radius
-        for x in (rleft, rleft+width):
-            for y in (rtop, rtop+height):
-                # compare distance between circle's center point and each point of
-                # the rectangle with the circle's radius
-                if math.hypot(x-center_x, y-center_y) <= radius:
-                    return True  # collision detected
-
-        # check if center of circle is inside rectangle
-        if rleft <= center_x <= rright and rtop <= center_y <= rbottom:
-            return True  # overlaid
-
-        return False  # no collision detected
+        if (distance <= radius):
+            return True
+        return False
 
     def isCollisionWithCircle(self, circle):
         if utils.magnitude(self.x, self.y, circle.x, circle.y) < self.r+circle.r:
@@ -55,7 +46,7 @@ class Circle2D:
         return False
 
     def draw(self, surface):
-        pass
+        pygame.draw.circle(surface, (255, 0, 0), (self.x, self.y), self.r, width=1)
 
     def update(self, deltaTime):
         pass

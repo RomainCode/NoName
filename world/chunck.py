@@ -56,8 +56,24 @@ class Chunck:
         self.offsetX = offsetX
         self.passed_right = False
         self.passed_left  = False
-   
+        print(self.map)
+        self.generate()
+        print(self.map)
 
+
+    def generate(self):
+
+        variations ={"grass": ["0", "1","3"], "dirt":["2"]}
+
+        for y in range(len(self.map)):
+            for x in range(len(self.map[y])):
+                if self.map[y][x] == "0": # => grass
+                    self.map[y][x] = random.choice(variations["grass"])
+                    
+                if self.map[y][x] == "2": # => dirt
+                    self.map[y][x] = random.choice(variations["dirt"])
+
+       
 
     def draw(self, surface: pygame.Surface):
         y = 0
@@ -65,7 +81,7 @@ class Chunck:
             x = 0
             for tile in row:
                 if tile != "-1":
-                    surface.blit(Chunck.TileSet[int(tile)], (x * self.img_size + self.offsetX, y * self.img_size+config.HEIGHT-config.GROUND_MARGIN+50))
+                    surface.blit(Chunck.TileSet[int(tile)], (x * self.img_size + self.offsetX, y * self.img_size+config.HEIGHT-config.GROUND_MARGIN+config.PLAYER_HEIGHT))
                 x += 1
             y += 1
     
