@@ -9,6 +9,7 @@ font = pygame.font.Font("./assets/fonts/upheavtt.ttf", 28)
 class MainScore():
     def __init__(self):
         self.current_gold = 4544512
+        self.super_star = 0
 
     def getStr(self):
             amount = self.current_gold
