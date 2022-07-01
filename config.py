@@ -8,12 +8,17 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+BASE_SPEED = 120
+
+
+current_speed = BASE_SPEED
+
 # pygame conf
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 WIDTH, HEIGHT = 1280, 720
-FPS = 60
+FPS = 144
 SYS_FONT = "Comic Sans MS"
 ##FLAVICON = pygame.image.load("./assets/favicon.ico")
 clock = pygame.time.Clock()

@@ -10,6 +10,9 @@ from physics.simulation.gravityBody import *
 from entities.coin import Coin
 from world.world import World
 from world.chunck import Chunck
+from world.chunckManager import ChunckManager
+from ui.mainScore import MainScore
+
 # temp import
 from physics.collisions.rectangle2D import Rectangle2D
 from entities.character import Character
@@ -23,9 +26,9 @@ collider = GravityBody(10,10,20,50)
 
 character = Character((50,10,20,50))
 world = World(character)
+main_score = MainScore()
 
-test_chunck = Chunck(64,"./world/map sets/map_test.csv")
-
+chunck_manager = ChunckManager()
 t1 = time.time()
 deltaTime = 0
 
@@ -57,8 +60,10 @@ while not game.isNeedToClose:
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
-    test_chunck.update(deltaTime)
-    test_chunck.draw(screen)
+    chunck_manager.back()
+    chunck_manager.update_chuncks(deltaTime)
+    chunck_manager.draw_chuncks(screen)
+    main_score.draw(screen)
 
     config.clock.tick(config.FPS)
     pygame.display.flip()

@@ -46,16 +46,18 @@ class Chunck:
     TileSet = strip_from_sheet(pygame.image.load("./assets/images/tileset.png"), (0, 0), (16, 16))
     TileSet = resize_tileset(TileSet, 64, 64)
 
-
-    def __init__(self, img_size: int, mapset_csv_path: str):
+    def __init__(self, img_size: int, mapset_csv_path: str, offsetX = 0):
         anim = animation()
         self.id = int(time.time() / 500 + random.randint(1, 100))
         print("chunck id: " + str(self.id))
         self.img_size = img_size
         self.map = list(csv.reader(open(mapset_csv_path)))
-        self.offsetX = 0
+        
+        self.offsetX = offsetX
+        self.passed_right = False
+        self.passed_left  = False
+   
 
-        print(self.map)
 
     def draw(self, surface: pygame.Surface):
         y = 0
@@ -65,13 +67,14 @@ class Chunck:
                 if tile != "-1":
                     surface.blit(Chunck.TileSet[int(tile)], (x * self.img_size + self.offsetX, y * self.img_size+config.HEIGHT-config.GROUND_MARGIN+50))
                 x += 1
-
             y += 1
     
     def update(self, deltaTime):
         self.offsetX = self.offsetX - deltaTime*Chunck.SPEED
-        if self.offsetX <= -len(self.map[0])*self.img_size + config.WIDTH:
-            print("out of the chunk")
+        if self.offsetX <= -len(self.map[0])*self.img_size + config.WIDTH: # when out of chunck from right side 
+            self.passed_right = True
+        if self.offsetX <= -len(self.map[0])*self.img_size: # when out of chunck from the left side
+            self.passed_left = True
     
 
 

@@ -11,7 +11,7 @@ class Character:
         self.gravity_scale = 1
 
         self.start_timer = False
-        self.jump_timer = 0.5 # 0.5s of jumping max
+        self.jump_timer = 0.4 # 0.5s of jumping max
         self.timer = self.jump_timer
     
     def tryToJump(self):
