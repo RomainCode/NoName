@@ -44,6 +44,17 @@ Keys = {"jump":"space"}
 
 GROUND_MARGIN = 200
 
+
+
+######## ITEMS IDS ########
+ITEMS = ["GOLD", "PPS", "PPS_%", "SUPER_STAR", "GEM", "SOUL"]
+
+
+######## FLAGS ########
+ERROR_FLAG = -1
+SUCCESS_FLAG = 0
+
+
 ### CONVENTIONS D'ECRITURE ###
 # variables contantes -> MA_VARIABLE
 # variable classique -> ma_variable

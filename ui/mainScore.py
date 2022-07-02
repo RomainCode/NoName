@@ -18,7 +18,7 @@ class MainScore():
             amount = i
             amount_str = str(int(amount))
 
-            if len(amount_str) >= 3:
+            if len(amount_str) > 3:
                 power_of_10 = len(amount_str)
                 power_unit = (power_of_10 - 4) // 3
 
@@ -35,8 +35,22 @@ class MainScore():
         img = font2.render("PPS : " + self.getStr(self.current_PPS), True, (250, 250, 250))
         surface.blit(img, (100, 125))
     
-    def triggerGold(self):
+    def triggerGoldCoin(self):
         self.current_gold += 1
+
+    def addGold(self, amount):
+        self.current_gold += amount
+        self.gainGoldFlag(amount)
+    
+    def addPPS(self, amount):
+        self.current_PPS += amount
+        self.gainPPSFlag(amount)
+    
+    def gainGoldFlag(self, amoount):
+        pass # handle gain gold effect
+
+    def gainPPSFlag(self, amoount):
+        pass # handle gain gold effect
     
     def update(self, deltaTime):
         pass

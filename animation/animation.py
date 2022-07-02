@@ -23,6 +23,23 @@ class Animation:
         self.time_btw_frames = 0.3
         self.type = Animation.TIMED
         self.state = Animation.PLAYING
+    
+    def copy(self):
+        anim = Animation()
+        anim.images = list(self.images)
+        anim.pointer = self.pointer
+        anim.last_time = self.time_btw_frames
+        anim.type = self.type
+        anim.state = self.state
+        return anim
+    
+    def synchronizeManually(self, pointer : int, last_time : float):
+        self.pointer = pointer
+        self.last_time = last_time
+    
+    def synchronize(self, animation):
+        self.pointer = animation.pointer
+        self.last_time = animation.last_time
 
     def setInterval(self, t : int):
         self.time_btw_frames = t
@@ -79,7 +96,7 @@ class Animation:
         
 
 
-    def getAllImagesInFolder(self,path : str) -> list:
+    def getAllImagesInFolder(self,path : str) -> list[str]:
         """
         return for all images in directory with all path as a list
         ex list:['./assets/slime/Slime1.png', './assets/slime/Slime2.png']

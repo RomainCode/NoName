@@ -31,7 +31,7 @@ class World:
             coin.update(deltaTime)
             if coin.collider.isCollisionWithRect(self.character.collider):
                 self.coins.remove(coin)
-                self.main_score.triggerGold()
+                self.main_score.triggerGoldCoin()
                 # add money to the player
             elif coin.collider.x < 0:
                 self.coins.remove(coin)
@@ -54,7 +54,7 @@ class World:
     def addCoin(self, x, y): # adds a single coin and synchronizes it
         coin = Coin(x, y)
         self.coins.append(coin)
-        coin.synchronize(self.coins[0].animation.last_time, self.coins[0].animation.pointer)
+        coin.animation.synchronize(self.coins[0].animation)
 
 
     def addCoinBatch(self): # adds a structure of coins

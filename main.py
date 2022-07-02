@@ -9,13 +9,17 @@ from game.game import Game
 from physics.simulation.gravityBody import * 
 from world.world import World
 from entities.character import Character
+from entities.staticEnemy import StaticEnemy
+from animation.animation import Animation
 
 screen = config.screen
 
 game = Game()
 character = Character((50,400,config.PLAYER_WIDTH,config.PLAYER_HEIGHT))
 world = World(character)
-
+anim = Animation()
+static_enemy = StaticEnemy((500, 300, 50, 50), True, True, animation_model=anim, max_hp=120)
+static_list = [static_enemy]
 
 t1 = time.time()
 deltaTime = 0
@@ -51,6 +55,16 @@ while not game.isNeedToClose:
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
+
+
+    for enemy in list(static_list):    
+        enemy.update(deltaTime)
+        enemy.draw(screen)
+
+        if enemy.collider.isCollisionWithRect(character.collider):
+            enemy.onKilled(score=world.main_score)
+            static_list.remove(enemy)
+
 
     config.clock.tick(config.FPS)
     pygame.display.flip()
