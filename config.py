@@ -22,7 +22,7 @@ pygame.font.init()
 pygame.mixer.init()
 WIDTH, HEIGHT = 1280, 720
 FPS = 144
-SYS_FONT = "Comic Sans MS"
+SYS_FONT = "./assets/fonts/upheavtt.ttf"
 ##FLAVICON = pygame.image.load("./assets/favicon.ico")
 clock = pygame.time.Clock()
 caption = "No Name Game yet"
@@ -39,7 +39,6 @@ H4 = pygame.font.SysFont(SYS_FONT, 16)
 H5 = pygame.font.SysFont(SYS_FONT, 13)
 H6 = pygame.font.SysFont(SYS_FONT, 10)
 
-Keys = {"jump":"space"}
 
 
 GROUND_MARGIN = 200

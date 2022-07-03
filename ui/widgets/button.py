@@ -13,12 +13,12 @@ if TYPE_CHECKING:
 
 class Button(Widget):
 
-    MARGIN = 2
+
     ON_CLICK_EVENT = 0
     ON_HOVER_EVENT = 1
 
     def __init__(self, container : Container, text="", onclick=None, font=config.H2, border_color=(200, 200, 200, 255), back_color=(50, 50, 50, 255), border_width=1, border_radius=0, foreground_color=(120, 120, 120, 255)):
-        super().__init__()
+        super().__init__(container)
 
         self.onclick_func = onclick
         self.onhover_func = None
@@ -30,8 +30,9 @@ class Button(Widget):
         self.foreground_color = foreground_color
         self.border_color = border_color
         self.placed = False
-        self.container = container
+
     
+
     def onClick(self):
         if self.onclick_func != None:
             self.onclick_func()
@@ -48,38 +49,41 @@ class Button(Widget):
         else:
             print("couldn't attach the command to the type because the type is not recognized, check Button.ON_eventName events")
     
-    def place(self, position_type, position=(0, 0)):
-        self.position_type = position_type
-
-        self.calculateDimensions()
-
-        if self.position_type == Widget.ABSOLUTE_POSITION:
-            self.x = position[0]
-            self.y = position[1]
-        elif self.position_type == Widget.AUTO_POSITION:
-            self.position = self.container.placeAtBottom(self)
+    def place(self, position=(0, 0)):
+        self.w, self.h = self.calculateRawDimensions()
         self.placed = True
+        self.container.addWidget(self)
     
-    def calculateDimensions(self):
+    def calculateRawDimensions(self):
         text = self.font.render(self.text, True, self.foreground_color, self.back_color)
-        self.h = text.get_height() + self.MARGIN
-        self.w = text.get_width() + self.MARGIN
+        return text.get_width(), text.get_height()
 
     
     def draw(self, surface):
         text = self.font.render(self.text, True, self.foreground_color)
 
-        x = self.x + self.container.x
-        y = self.y + self.container.y
+
+
+        if self.position_type == Widget.AUTO_BOTTOM or self.position_type == Widget.AUTO_RIGHT:
+            x = self.x + self.container.x + self.left_margin
+            y = self.y + self.container.y + self.top_margin
+        elif self.position_type == Widget.ABSOLUTE_POSITION:
+            x = self.x
+            y = self.y
+        elif self.position_type == Widget.FIXED_POSITION:
+            x = self.x
+            y = self.y
+        else:
+            print("can't find")
         
         # draw background
-        pygame.draw.rect(surface, self.back_color, (x, y, self.w, self.h), border_radius=self.border_radius)
+        pygame.draw.rect(surface, self.back_color, (x, y, self.w+self.left_padding+self.right_padding, self.h+self.top_padding+self.bottom_padding), border_radius=self.border_radius)
 
         # draw the border
-        pygame.draw.rect(surface, self.border_color, (x, y, self.w, self.h), width=self.border_width, border_radius=self.border_radius)
+        pygame.draw.rect(surface, self.border_color, (x, y, self.w+self.left_padding+self.right_padding, self.h+self.top_padding+self.bottom_padding), width=self.border_width, border_radius=self.border_radius)
 
         #draw the text
-        surface.blit(text, (x, y))
+        surface.blit(text, (x+self.left_padding, y+self.top_padding))
     
     def update(self, deltaTime, x_offset, y_offset, left_clicked):
         mouse_pos = pygame.mouse.get_pos()

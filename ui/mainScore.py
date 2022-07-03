@@ -1,11 +1,12 @@
 import math
 import pygame
+from utils.utils import createFont
 
 number_abbreviations = ["K", "M", "B", "t", "q", "Q", "s", "S", "o", "n", "d", "U", "D", "T", "Qt", "Qd", "Sd", "St", "O", "N", "v", "c"]
 
 
-font1 = pygame.font.Font("./assets/fonts/upheavtt.ttf", 28)
-font2 = pygame.font.Font("./assets/fonts/upheavtt.ttf", 18)
+font1 =createFont(size=28)
+font2 = createFont(size=18)
 
 class MainScore():
     """Stores and display the main scores informations"""
