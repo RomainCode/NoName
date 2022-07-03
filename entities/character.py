@@ -5,7 +5,7 @@ from animation.animationManager import *
 class Character:
     def __init__(self,body_parameters: tuple):
         self.collider = GravityBody(body_parameters[0], body_parameters[1], body_parameters[2], body_parameters[3])
-        self.JUMP_FORCE = -500
+        self.JUMP_FORCE = -550
         self.is_willing_to_jump = False
         self.is_willing_to_stop_jumping = False
         self.gravity_scale = 1

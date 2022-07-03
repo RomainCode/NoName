@@ -60,13 +60,23 @@ class World:
     def addCoinBatch(self): # adds a structure of coins
         batch_size = random.choice(World.COIN_SPAWN_PROPORTIONS)
         world_x = config.WIDTH
-        world_y = random.randint(1, 3)*45 + 200
+        world_y = random.randint(1, 3)*40 + 200
 
         relat_pos_list = []
+        position = [0, 0]
+
+        min_range_x = 0
+        min_range_y = 0
+        while min_range_x * min_range_y < batch_size:
+            if min_range_y < 3:
+                min_range_y+= 1
+            min_range_x += 1
+
         while len(relat_pos_list) != batch_size:
-            position = [random.randint(0, 4), random.randint(0, 4)]
+            #position[0] * position[1]
+            position = [random.randint(min_range_x, min_range_x+2), random.randint(min_range_y, min_range_y+2)]
             if not position in relat_pos_list:
                 relat_pos_list.append(position)
         
         for i in range(batch_size):
-            self.addCoin(relat_pos_list[i][0]*45+world_x, relat_pos_list[i][1]*45+world_y)
+            self.addCoin(relat_pos_list[i][0]*40+world_x, relat_pos_list[i][1]*40+world_y)

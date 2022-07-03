@@ -41,7 +41,7 @@ def resize_tileset(tileset, width, height) -> list:
 
 class Chunck:
 
-    SPEED = 120
+    SPEED = config.BASE_SPEED
 
     TileSet = strip_from_sheet(pygame.image.load("./assets/images/tileset.png"), (0, 0), (16, 16))
     TileSet = resize_tileset(TileSet, 64, 64)

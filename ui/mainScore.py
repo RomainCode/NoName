@@ -11,7 +11,7 @@ class MainScore():
     """Stores and display the main scores informations"""
     def __init__(self):
         self.current_gold = 0
-        self.current_PPS = 0
+        self.current_PPS = 40.3
         self.super_star = 0
 
     def getStr(self, i : int):
@@ -28,11 +28,11 @@ class MainScore():
                 return str(round(amount / 10**(power_unit*3+3), 2)) + number_abbreviations[power_unit]
             else:
                 return amount_str
-    
+
     def draw(self, surface):
         img = font1.render(self.getStr(self.current_gold), True, (250, 250, 250))
         surface.blit(img, (100, 100))
-        img = font2.render("PPS : " + self.getStr(self.current_PPS), True, (250, 250, 250))
+        img = font2.render(self.getStr(self.current_PPS)+" PPS", True, (250, 250, 250))
         surface.blit(img, (100, 125))
     
     def triggerGoldCoin(self):
@@ -53,4 +53,4 @@ class MainScore():
         pass # handle gain gold effect
     
     def update(self, deltaTime):
-        pass
+        self.current_gold += self.current_PPS * deltaTime
