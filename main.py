@@ -22,6 +22,8 @@ static_enemy = StaticEnemy((500, 300, 50, 50), True, True, animation_model=anim,
 static_list = [static_enemy]
 
 
+
+# temp ui
 from ui.widgets.container import Container
 from ui.widgets.button import Button
 from ui.widgets.widget import Widget
