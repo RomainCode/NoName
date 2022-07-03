@@ -13,7 +13,7 @@ class GravityBody(Rectangle2D):
     def __init__(self, x, y, w, h):
         super().__init__(x, y, w, h) # extends Rectangle2D
         self.velocityY = 0
-        self.wheight = 110
+        self.wheight = 175
         self.deltaTime =0
         self.gravity_scale = 1
     
