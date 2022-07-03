@@ -8,3 +8,11 @@ def isCollisionRect(x1, y1, x2, y2, w1, h1, w2, h2) -> bool:
 
 def magnitude(x1, y1, x2, y2): # lenght of a vector
     return math.sqrt((x1+x2)**2 + (y1+y2)**2)
+
+def isPointInRect(xr, yr, wr, hr, x, y) -> bool:
+    x1, y1, w, h = xr, yr, wr, hr
+    x2, y2 = x1+w, y1+h
+    if (x1 < x and x < x2):
+        if (y1 < y and y < y2):
+            return True
+    return False

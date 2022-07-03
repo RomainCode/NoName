@@ -30,14 +30,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption(caption )
 ##pygame.display.set_icon(FLAVICON)
 
-"""# different font size
+# different font size
 H0 = pygame.font.SysFont(SYS_FONT, 55)
 H1 = pygame.font.SysFont(SYS_FONT, 32)
 H2 = pygame.font.SysFont(SYS_FONT, 24)
 H3 = pygame.font.SysFont(SYS_FONT, 18)
 H4 = pygame.font.SysFont(SYS_FONT, 16)
 H5 = pygame.font.SysFont(SYS_FONT, 13)
-H6 = pygame.font.SysFont(SYS_FONT, 10)"""
+H6 = pygame.font.SysFont(SYS_FONT, 10)
 
 Keys = {"jump":"space"}
 

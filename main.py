@@ -21,6 +21,21 @@ anim = Animation()
 static_enemy = StaticEnemy((500, 300, 50, 50), True, True, animation_model=anim, max_hp=120)
 static_list = [static_enemy]
 
+
+from ui.widgets.container import Container
+from ui.widgets.button import Button
+from ui.widgets.widget import Widget
+
+container = Container()
+container.place(50, 50)
+
+btn = Button(container, text="Hello World !", border_color=config.BLUE, foreground_color=config.WHITE, border_radius=3, border_width=3)
+btn.place(Widget.AUTO_POSITION)
+btn.attachCommand(Button.ON_CLICK_EVENT, lambda : print("Hello World"))
+
+btn2 = Button(container, text="Button test 2 !", border_color=config.RED, foreground_color=config.WHITE)
+btn2.place(Widget.AUTO_POSITION)
+
 t1 = time.time()
 deltaTime = 0
 
@@ -28,6 +43,7 @@ while not game.isNeedToClose:
 
 
     # Input collector
+    left_clicked = False
     for event in pygame.event.get():
 
         mouse_pos = pygame.mouse.get_pos()
@@ -43,6 +59,10 @@ while not game.isNeedToClose:
             if event.key == pygame.K_SPACE:
                 character.releaseJump()
         
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1: # left click
+                left_clicked = True
+        
     # deltaTime calculation
     t2 = time.time()
     deltaTime = t2 - t1
@@ -55,6 +75,10 @@ while not game.isNeedToClose:
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
+
+    container.update(deltaTime, is_left_click=left_clicked)
+
+    container.draw(screen)
 
 
     for enemy in list(static_list):    
