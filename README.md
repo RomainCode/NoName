@@ -38,13 +38,33 @@ for link same syntax but you put the ! at the end [Random Name](link)!
 <br>  
 <br> 
 
-* entities: a folder ccontaining all entities 
+* entities: a folder containing all entities classes
   * __Character.py__: Contain the __Character__ class who is the player
+  * __coin.py__: Contain the __coin__ class, i's s the currency that the player can gather
+  * __entity.py__: Not defined
+  * __staticEnemi.py__: Not Defined
   
   
 <br>  
 <br>
 
+* game: a folder containing all scenes and class for the game
+  * __game.py__: Contain the __Game__ class used in the  main loop to launch the game
+  * __scene.py__: Contain the __Scene__ class that is all the different menu and scene available
+
+  
+  
+<br>  
+<br>
+
+* gameLogic: a folder containing all calc around gain and upgrades
+  * __gain.py__: Contain the __extractGain__ function used to manage all possibles gain in the game
+  * __upgrade.py__: Contain the __Upgrade__, __UpgradableItem__ class and __GeneratorItem(UpgradableItem)__ subclass , check the file for more details
+
+  
+  
+<br>  
+<br>
 <h2 align="center">Usages</h2>
 
 Console commands
