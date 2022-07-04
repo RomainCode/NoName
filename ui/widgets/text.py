@@ -22,12 +22,18 @@ class Text(Widget):
         self.border_width = border_width
         self.border_radius = border_radius
         self.border_color = border_color
+        self.link()
     
-
-    def place(self, position=(0, 0)):
-        self.w, self.h = self.calculateRawDimensions()
+    def link(self):
+        self.setDimensions()
         self.placed = True
         self.container.addWidget(self)
+    
+    def setDimensions(self, fixed : tuple =None):
+        if fixed == None:
+            self.w, self.h = self.calculateRawDimensions()
+        else:
+            self.w, self.h = fixed
 
     def calculateRawDimensions(self):
         text = self.font.render(self.text, True, (0, 0, 0, 0), (0, 0, 0, 0))

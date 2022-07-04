@@ -29,40 +29,80 @@ static_list = [static_enemy]
 from ui.widgets.container import Container
 from ui.widgets.button import Button
 from ui.widgets.widget import Widget
+from ui.widgets.widget import ButtonComp, BorderComp
 from ui.widgets.image import Image
 from ui.widgets.text import Text
 
-master_container = Container()
-master_container.x = 100
-master_container.y = 100
 
-container = Container(parent=master_container)
-btn = Button(container, text="Hello World !", border_color=config.BLUE, foreground_color=config.WHITE, border_radius=3, border_width=3)
-btn.place()
-btn.attachCommand(Button.ON_CLICK_EVENT, lambda : print("Hello World"))
-btn2 = Button(container, text="Button test 2 !", border_color=config.RED, foreground_color=config.WHITE)
-btn2.setMargins(5, 5, 10, 5)
-btn2.setPaddings(5, 5, 5, 5)
-btn2.place(Widget.AUTO_RIGHT)
-container.place(150, 50, Widget.AUTO_BOTTOM)
+menue_container = Container(position_type=Widget.AUTO_BOTTOM)
 
-
-container2 = Container(parent=master_container)
+container = Container(position_type=Widget.AUTO_RIGHT, parent=menue_container)
 image_surface = pygame.transform.scale(pygame.image.load("assets/images/slime/blurping/Slime1.png"), (50, 50))
-img = Image(container2, image_surface, background_color=(50, 50, 50, 20), border_width=3, border_radius=3)
-img.setMargins(10, 10, 10, 10)
-img.place()
-text = Text(container2, text="Lv. XXX")
-text.setMargins(10, 10, 10, 10)
-text.place()
-btn4 = Button(container2, text="Buy", border_color=config.GREEN, back_color=(175, 255, 75), foreground_color=(100, 100, 100), border_radius=3, border_width=3)
-btn4.attachCommand(Button.ON_CLICK_EVENT, lambda : print("Stop"))
-btn4.setPaddings(10, 10, 10, 10)
-btn4.setMargins(10, 10, 10, 10)
-btn4.place()
-container2.place(150, 300, Widget.AUTO_RIGHT)
+img = Image(container, image_surface, background_color=(50, 50, 50, 20), border_width=3, border_radius=3, border_color=(25, 25, 25))
+img.link()
 
-master_container.place(100, 100, Widget.AUTO_BOTTOM)
+## text container
+text_container = Container(parent=container, position_type=Widget.AUTO_BOTTOM)
+
+level_text = Text(text_container, "Lvl. XXX", config.H2)
+name_text = Text(text_container, "Slime", config.H4, (200, 200, 200, 255))
+
+text_container.link(0, 0)
+text_container.setMargins(10, 10, 0, 0)
+
+next_upgrade_container = Container(container, position_type=Widget.AUTO_BOTTOM)
+text_2 = Text(next_upgrade_container, "+ 6", font=config.H4)
+text_3 = Text(next_upgrade_container, "PPS", font=config.H4)
+next_upgrade_container.link(0, 0)
+
+
+## btn
+buy_comtainer = Container(parent=container, position_type=Widget.AUTO_BOTTOM)
+buy_text = Text(buy_comtainer, "Buy 1", config.H3)
+price = Text(buy_comtainer, "1.24 M", config.H3)
+
+btn_comp = ButtonComp()
+btn_comp.on_click_fn = lambda : print("Clicked !")
+buy_comtainer.addComponent(btn_comp)
+
+border = BorderComp(3, 5, (200, 100, 100))
+buy_comtainer.addComponent(border)
+
+buy_comtainer.setMargins(10, 10, 10, 10)
+buy_comtainer.setPaddings(5, 5, 5, 5)
+buy_comtainer.link(0, 0)
+
+
+container.setMargins(10, 10, 10,)
+container.link(150, 300)
+
+
+container_bis = container.copyAndAssign(parent=menue_container)
+container_bis.setMargins(10, 10, 10,)
+container_bis.link(0, 0)
+
+menue_container.link(300, 100)
+
+
+img.setAlignment(Widget.VIERTICAL_ALIGN)
+text_container.setAlignment(Widget.VIERTICAL_ALIGN)
+next_upgrade_container.setAlignment(Widget.VIERTICAL_ALIGN)
+buy_comtainer.setAlignment(Widget.VIERTICAL_ALIGN)
+
+########## How to code with widgets ##########
+
+### Diferents objects all coming from a Widget class
+## Widget class
+# contain the rectangle of the object, margins, paddins, position_type, alignement...
+
+### How to implement a Text with his container
+# container = Container(parent=None) -> initialize the Container
+# 
+# text = Text(container, text="Coucou") -> initialize the Text object and point it to the container
+# text.place() -> set the x and y of the widget, adds it to the container widgets list
+# 
+# container.link(10, 20)
+
 
 t1 = time.time()
 deltaTime = 0
@@ -105,9 +145,9 @@ while not game.isNeedToClose:
     world.update(deltaTime)
     world.draw(screen)
     character.update(deltaTime)
-    master_container.update(deltaTime, is_left_click=left_clicked)
+    menue_container.update(deltaTime, is_left_click=left_clicked)
     drawFps(config.clock, (0,0), screen)
-    master_container.draw(screen)
+    menue_container.draw(screen)
     
 
 

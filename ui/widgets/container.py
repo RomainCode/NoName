@@ -1,26 +1,26 @@
 from ui.widgets.widget import Widget
+from ui.widgets.widget import ButtonComp, BorderComp
 from ui.widgets.button import Button
 
 import pygame
 
 class Container(Widget):
+
+    DRAW_DEBUG_RECTS = False
     
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, position_type=Widget.AUTO_RIGHT):
         super().__init__(parent)
         self.widgets = []
+        self.position_type = position_type
     
     def addWidget(self, widget):
-        self.widgets.append(widget)
+        if widget not in self.widgets:
+            self.widgets.append(widget)
 
-    def place(self, x, y, type):
-        self.x = x
-        self.y = y
-        self.placed = True
-        self.position_type = type
-        self.updateRelativePositions()
-        self.w = self.getWidth()
-        self.h = self.getHeight()
-        if self.container != None:
+    
+    def link(self, x, y):
+        self.setPosition(x, y)
+        if self.container is not None:
             self.container.addWidget(self)
             if self.position_type == Widget.AUTO_BOTTOM:
                 self.y = self.container.getHeight()
@@ -30,6 +30,28 @@ class Container(Widget):
                 self.y = 0
             else:
                 raise BaseException("Unknown organization type "+str(self.position_type))
+        self.setDimensions()
+    
+    def setDimensions(self, fixed=None):
+        if fixed == None:
+            self.w, self.h = self.getWidth(), self.getHeight()
+        else:
+            self.w, self.h = fixed
+    
+    def setPosition(self, x, y):
+        self.x = x
+        self.y = y
+        self.placed = True
+        self.calculateEachChildPositions()
+
+
+    def copyAndAssign(self, x=0, y=0, parent=None):
+        new_container = Container(parent=parent)
+        for widget in self.widgets:
+            new_container.addWidget(widget)
+        new_container.position_type = self.position_type
+        new_container.calculateEachChildPositions()
+        return new_container
 
 
     def getHeight(self):
@@ -46,7 +68,7 @@ class Container(Widget):
                 h = max(h, widget.getTotalHeight())
             return h
         else:
-            return 0
+            raise NotImplemented("Can't calculate this container height")
         
     def getWidth(self):
         if self.position_type == Widget.AUTO_BOTTOM:
@@ -62,9 +84,10 @@ class Container(Widget):
             for widget in self.widgets:
                 w += widget.getTotalWidth()
             return w
-        return 0
+        else:
+            raise NotImplemented("Can't calculate this container width")
         
-    def updateRelativePositions(self):
+    def calculateEachChildPositions(self):
         """Tells all the widgets what their positions are compared to the container or to the screen"""
         
         # Auto positions
@@ -73,15 +96,19 @@ class Container(Widget):
             widget : Widget
             for widget in self.widgets:
                 widget.y = y_offset
-                widget.position_type = self.position_type
+                widget.x = 0
+                if widget.__class__ != Container:
+                    widget.position_type = self.position_type
                 y_offset += widget.getTotalHeight()
         
         elif self.position_type == Widget.AUTO_RIGHT:
             x_offset = 0
             widget : Widget
             for widget in self.widgets:
-                widget.position_type = self.position_type
+                if widget.__class__ != Container:
+                    widget.position_type = self.position_type
                 widget.x = x_offset
+                widget.y = 0
                 x_offset += widget.getTotalWidth()
         
         # Abssolute positions
@@ -90,7 +117,8 @@ class Container(Widget):
             for widget in self.widgets:
                 widget.x = widget.absolute_position[0] + self.x
                 widget.y = widget.absolute_position[1] + self.y
-                widget.position_type = self.position_type
+                if widget.__class__ != Container:
+                    widget.position_type = self.position_type
 
         # Fixed positions
         elif self.position_type == Widget.ABSOLUTE_POSITION:
@@ -98,7 +126,8 @@ class Container(Widget):
             for widget in self.widgets:
                 widget.x = widget.fixed_position[0]
                 widget.y = widget.fixed_position[1]
-                widget.position_type = self.position_type
+                if widget.__class__ != Container:
+                    widget.position_type = self.position_type
         
         else:
             raise BaseException("Unknown organization type "+str(self.position_type))
@@ -106,7 +135,8 @@ class Container(Widget):
     
     def draw(self, surface, x_off=0, y_off=0):
 
-        pygame.draw.rect(surface, (255, 0, 0), (self.x+x_off, self.y+y_off, self.w, self.h), width=1)
+        if Container.DRAW_DEBUG_RECTS == True:
+            pygame.draw.rect(surface, (255, 0, 0), (self.x+x_off+self.left_margin, self.y+y_off+self.top_margin, self.w, self.h), width=1)
 
         if not self.placed:
             raise BaseException("couldn't draw this container because it has not been placed")
@@ -115,9 +145,18 @@ class Container(Widget):
             if not widget.placed:
                 raise BaseException("couldn't draw this widget because it has not been placed "+str(widget))
 
-            widget.draw(surface, x_off+self.x, y_off+self.y)
+            widget.draw(surface, x_off+self.x+self.left_margin+self.left_padding, y_off+self.y+self.top_margin+self.top_padding)
     
+        for component in self.components:
+            if component.__class__ == BorderComp:
+                component.draw(surface, self, x_off+self.x+self.left_margin, y_off+self.y+self.top_margin)
+
     def update(self, deltaTime, is_left_click=False, x_off=0, y_off=0):
+
+        for component in self.components:
+            if component.__class__ == ButtonComp:
+                component.update(self.isHovering(x_off, y_off), is_left_click)
+        
         if not self.placed:
             raise BaseException("couldn't update this container because it has not been placed")
         
@@ -129,25 +168,3 @@ class Container(Widget):
                 widget.update(deltaTime, x_off=x_off+self.x, y_off=y_off+self.y, left_clicked=is_left_click)
             if widget.__class__ == Container:
                 widget.update(deltaTime, x_off=x_off+self.x, y_off=y_off+self.y, is_left_click=is_left_click)
-
-class VsisibleContainer(Container):
-    def __init__(self,  border_color=(200, 200, 200, 255), back_color=(50, 50, 50, 255), border_width=1, border_radius=0, foreground_color=(120, 120, 120, 255)):
-        super().__init__()
-        self.back_color = back_color
-        self.border_width = border_width
-        self.border_radius = border_radius
-        self.foreground_color = foreground_color
-        self.border_color = border_color
-    
-    def draw(self, surface):
-        if not self.placed:
-            raise BaseException("couldn't draw this container because it has not been placed")
-
-        # calculate container width and height
-        # draw the rectangle
-
-        for widget in self.widgets:
-            if not widget.placed:
-                raise BaseException("couldn't draw this widget because it has not been placed "+str(widget))
-            widget.draw(surface)
-

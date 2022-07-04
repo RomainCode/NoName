@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ui.widgets.widget import Widget
+from ui.widgets.widget import ButtonComp
 import config
 from utils import utils
 
@@ -20,8 +21,6 @@ class Button(Widget):
     def __init__(self, container : Container, text="", onclick=None, font=config.H2, border_color=(200, 200, 200, 255), back_color=(50, 50, 50, 255), border_width=1, border_radius=0, foreground_color=(120, 120, 120, 255)):
         super().__init__(container)
 
-        self.onclick_func = onclick
-        self.onhover_func = onHoverBasic
         self.text = text
         self.font = font
         self.back_color = back_color
@@ -30,6 +29,12 @@ class Button(Widget):
         self.foreground_color = foreground_color
         self.border_color = border_color
         self.placed = False
+
+        self.button_comp = ButtonComp()
+        self.button_comp.on_click_fn = onclick
+        self.button_comp.on_hover_fn = onHoverBasic
+
+        self.link()
 
     def onClick(self):
         if self.onclick_func != None:
@@ -41,16 +46,22 @@ class Button(Widget):
     
     def attachCommand(self, type : int, command : function):
         if type == Button.ON_CLICK_EVENT:
-            self.onclick_func = command
+           self.button_comp.on_click_fn = command
         elif type == Button.ON_HOVER_EVENT:
-            self.onhover_func = command
+            self.button_comp.on_hover_fn = command
         else:
             print("couldn't attach the command to the type because the type is not recognized, check Button.ON_eventName events")
     
-    def place(self, position=(0, 0)):
-        self.w, self.h = self.calculateRawDimensions()
+    def link(self):
+        self.setDimensions()
         self.placed = True
         self.container.addWidget(self)
+    
+    def setDimensions(self, fixed=None):
+        if fixed == None:
+            self.w, self.h = self.calculateRawDimensions()
+        else:
+            self.w, self.h = self.fixed
     
     def calculateRawDimensions(self):
         text = self.font.render(self.text, True, self.foreground_color, self.back_color)
@@ -82,21 +93,9 @@ class Button(Widget):
         surface.blit(text, (x+self.left_padding, y+self.top_padding))
     
     def update(self, deltaTime, x_off=0, y_off=0, left_clicked=False):
-        mouse_pos = pygame.mouse.get_pos()
-
-        if self.position_type == Widget.AUTO_BOTTOM or self.position_type == Widget.AUTO_RIGHT:
-            x = self.x + x_off + self.left_margin
-            y = self.y + y_off + self.top_margin
         
-        if self.position_type == Widget.ABSOLUTE_POSITION or self.position_type == Widget.FIXED_POSITION:
-            raise NotImplemented("ABSOLUTE_POSITION and FIXED_POSITION are not yet totally implemented. Please use AUTO_BOTTOM or AUTO_RIGHT")
-
-        if utils.isPointInRect(x, y, self.w+self.left_padding+self.right_padding, self.h+self.top_padding+self.bottom_padding, mouse_pos[0], mouse_pos[1]):
-            self.onHover()
-            if left_clicked:
-                self.onClick()
-
-
+        if self.isHovering(x_off, y_off):
+            self.button_comp.update(is_collision=True, is_clicked=left_clicked)
 
 
 def onHoverBasic():

@@ -21,7 +21,7 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 WIDTH, HEIGHT = 1280, 720
-FPS = 144
+FPS = 500
 SYS_FONT = "./assets/fonts/upheavtt.ttf"
 ##FLAVICON = pygame.image.load("./assets/favicon.ico")
 clock = pygame.time.Clock()

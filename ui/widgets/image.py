@@ -1,15 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ui.widgets.container import Container
+
 from ui.widgets.widget import Widget
 import config
 from utils import utils
 
 import pygame
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ui.widgets.container import Container
 
 class Image(Widget):
 
@@ -22,10 +22,16 @@ class Image(Widget):
         self.border_color = border_color
     
 
-    def place(self, position=(0, 0)):
-        self.w, self.h = self.calculateRawDimensions()
+    def link(self):
+        self.setDimensions()
         self.placed = True
         self.container.addWidget(self)
+    
+    def setDimensions(self, fixed = None):
+        if fixed == None:
+            self.w, self.h = self.calculateRawDimensions()
+        else:
+            self.w, self.h = fixed
 
     def calculateRawDimensions(self) -> tuple:
         return self.image.get_width(), self.image.get_height()
