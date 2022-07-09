@@ -9,7 +9,8 @@ import csv
 
 
 
-def load_tileset(filename, width, height) -> list:
+def load_tileset(filename: str, width: int, height: int) -> list:
+    """load tile sheet from a given file"""
     image = pygame.image.load(filename).convert()
     image_width, image_height = image.get_size()
     tileset = []
@@ -19,7 +20,9 @@ def load_tileset(filename, width, height) -> list:
             tileset.append(image.subsurface(rect))
     return tileset
 
-def strip_from_sheet(sheet, start, size):
+def strip_from_sheet(sheet: pygame.Surface, start: int, size: int) -> list:
+    """from imported sheet it cut all image with a given size"""
+
     frames = []
     img_width = sheet.get_width()
     img_height = sheet.get_height()
@@ -31,7 +34,9 @@ def strip_from_sheet(sheet, start, size):
             frames.append(sheet.subsurface(pygame.Rect(location, size)))
     return frames
 
-def resize_tileset(tileset, width, height) -> list:
+def resize_tileset(tileset: list[pygame.Surface], width: int, height: int) -> list:
+    """Resize all tiles from a tileset list"""
+
     new_tileset = []
     for image in tileset:
         new_img = pygame.transform.scale(image, (width, height))
@@ -40,13 +45,17 @@ def resize_tileset(tileset, width, height) -> list:
 
 
 class Chunck:
-
+    """It's the object that represents the moving scenery
+       ex: Chunck(64,"world/map_set/__fantasy__0_1.csv")
+    """
+    
     SPEED = config.BASE_SPEED
 
     TileSet = strip_from_sheet(pygame.image.load("./assets/images/tileset.png"), (0, 0), (16, 16))
     TileSet = resize_tileset(TileSet, 64, 64)
 
-    def __init__(self, img_size: int, mapset_csv_path: str, offsetX = 0):
+    def __init__(self, img_size: int, mapset_csv_path: str, offsetX = 0, offsetY=5):
+       
         anim = animation()
         self.id = int(time.time() / 500 + random.randint(1, 100))
         self.img_size = img_size
@@ -56,11 +65,22 @@ class Chunck:
         self.passed_right = False
         self.passed_left  = False
         self.generate()
+        self.offsetY= offsetY
 
-
-    def generate(self):
-
-        variations ={"grass": ["0", "1","3"], "dirt":["2"]}
+    def generate(self) -> list[list]:
+        """this function manage textures variations, it need a csv in order to work"""
+        # dirt 5 == ore
+        # dirt 2 == basic dirt
+        
+        final_dirt = []
+        final_grass = []
+        dirt = [["2" for i in range(92)],["5" for i in range(8)]]
+        grass = [["0" for i in range(33)],["1" for i in range(33)],["3" for i in range(33)]]
+        for dirts in dirt:
+            final_dirt.extend(dirts)
+        for grasses in grass:
+            final_grass.extend(grasses)
+        variations ={"grass": final_grass, "dirt": final_dirt}
 
         for y in range(len(self.map)):
             for x in range(len(self.map[y])):
@@ -73,16 +93,18 @@ class Chunck:
        
 
     def draw(self, surface: pygame.Surface):
+        """draw all tiles"""
         y = 0
         for row in self.map:
             x = 0
             for tile in row:
                 if tile != "-1":
-                    surface.blit(Chunck.TileSet[int(tile)], (x * self.img_size + self.offsetX, y * self.img_size+config.HEIGHT-config.GROUND_MARGIN+config.PLAYER_HEIGHT))
+                    surface.blit(Chunck.TileSet[int(tile)], (x * self.img_size + self.offsetX, y * self.img_size+config.HEIGHT-config.GROUND_MARGIN-self.offsetY+ config.PLAYER_HEIGHT))
                 x += 1
             y += 1
     
     def update(self, deltaTime):
+        """update positions of each tiles"""
         self.offsetX = self.offsetX - deltaTime*Chunck.SPEED
         if self.offsetX <= -len(self.map[0])*self.img_size + config.WIDTH: # when out of chunck from right side 
             self.passed_right = True

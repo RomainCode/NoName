@@ -39,9 +39,11 @@ H4 = pygame.font.SysFont(SYS_FONT, 16)
 H5 = pygame.font.SysFont(SYS_FONT, 13)
 H6 = pygame.font.SysFont(SYS_FONT, 10)
 
+F26 = pygame.font.SysFont(SYS_FONT, 26)
 
 
-GROUND_MARGIN = 200
+
+GROUND_MARGIN = 250
 
 
 

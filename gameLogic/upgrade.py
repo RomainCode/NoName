@@ -46,5 +46,5 @@ class GeneratorItem(UpgradableItem):
     def getNextGain(self) -> float:
         return self.PPS*self.gain_multiplier**(self.level+1)
     
-    def getGainOfNNext(self, n : int) -> float:
+    def getGainOfnNext(self, n : int) -> float:
         return (self.gain_multiplier**n - 1)/(self.gain_multiplier-1)
